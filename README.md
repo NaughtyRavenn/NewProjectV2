@@ -12,3 +12,4 @@
   - Cookie: chưa có nên thoải mái chuyển qua lại các path.
   - Docker: để Mentor đỡ phải setup các thứ.
   - CSS: maybe
+  - Game: Gacha
