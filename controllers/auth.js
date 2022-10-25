@@ -9,14 +9,7 @@ const db = mysql.createConnection({
 
 exports.register = (req, res) => {
   console.log(req.body);
-
-  //   const name = req.body.name;
-  //   const email = req.body.email;
-  //   const password = req.body.password;
-  //   const passwordConfirm = req.body.passwordConfirm;
-
   const { name, email, password, passwordConfirm } = req.body;
-
   db.query(
     "SELECT email FROM users WHERE email = ?",
     [email],
@@ -47,27 +40,46 @@ exports.register = (req, res) => {
       );
     }
   );
+  Ư;
 };
 
 exports.login = (req, res) => {
   console.log(req.body);
-
   const { email, password } = req.body;
-
-  db.query(
-    "SELECT * FROM users WHERE email = ? AND password = ?",
-    [email, password],
-    (error, results) => {
-      if (error) {
-        console.log(error);
+  if (req.body.email == "admin@admin") {
+    console.log(req.body.email);
+    db.query(
+      "SELECT * FROM admin WHERE email = 'admin@admin' AND password = ?",
+      [password],
+      (error, results) => {
+        if (error) {
+          console.log(error);
+        }
+        if (results.length > 0) {
+          return res.render("admin");
+        } else {
+          return res.render("login", {
+            message: "Email or Password wrong",
+          });
+        }
       }
-      if (results.length > 0) {
-        return res.render("index");
-      } else {
-        return res.render("login", {
-          message: "Email or Password wrong",
-        });
+    );
+  } else {
+    db.query(
+      "SELECT * FROM users WHERE email = ? AND password = ?",
+      [email, password],
+      (error, results) => {
+        if (error) {
+          console.log(error);
+        }
+        if (results.length > 0) {
+          return res.render("index");
+        } else {
+          return res.render("login", {
+            message: "Email or Password wrong",
+          });
+        }
       }
-    }
-  );
+    );
+  }
 };
